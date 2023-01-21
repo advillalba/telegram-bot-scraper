@@ -1,0 +1,80 @@
+start:
+  id: start
+  error_message: No se comprendió la solicitud, elige una de las opciones dadas.
+  options:
+    inline_keyboard:
+      - - callback_data: new_scraper
+          text: Nuevo scraper
+        - callback_data: stop
+          text: Parar scraper
+      - - callback_data: status
+          text: Scrapers activos
+        - callback_data: help
+          text: Ayuda
+  text: Hola, ¿Qué necesitas?
+  validation: (start)|(help)|(status)|(new_scraper)|(stop.*)
+
+interval:
+  id: interval
+  error_message: No se comprendió la solicitud, elige una de las opciones dadas.
+  options:
+    inline_keyboard:
+      - - callback_data: '30'
+          text: 30 segundos
+        - callback_data: '60'
+          text: 1 minuto
+      - - callback_data: '300'
+          text: 5 minutos
+  text: ¿Cada cuánto tiene que ejecutarse?
+  validation: (30)|(60)|(300)
+
+url:
+  id: url
+  options:
+    force_reply: true
+    input_field_placeholder: https://www.my_website.es
+  text: ¿Cuál es la URL a Scrappear?
+  validation: ^((http(s)?):\/\/(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))$
+  error_message: URL con formato incorrecto
+
+scraper_type:
+  id: scraper_type
+  options:
+    inline_keyboard:
+      - - callback_data: default_scraper
+          text: Predefinido
+      - - callback_data: jsonpath_scraper
+          text: JSONPath
+      - - callback_data: xpath_scraper
+          text: XPath
+      - - callback_data: custom_scraper
+          text: Texto libre
+  text: ¿Qué tipo de scraper?
+  validation: (default_scraper)|(jsonpath_scraper)|(xpath_scraper)|(custom_scraper)
+  error_message: No se comprendió la solicitud, elige una de las opciones dadas.
+
+default_scraper:
+  id: default_scraper
+  options:
+    inline_keyboard:
+      - - callback_data: to_do
+          text: 'TO_DO'
+  text: Actualmente no existen scrapers predefinidos
+  validation: (to_do)
+  error_message: No se comprendió la solicitud, elige una de las opciones dadas.
+
+text_to_find:
+  id: text_to_find
+  options:
+    force_reply: true
+    input_field_placeholder: Texto a buscar...
+  text: Introduce el texto a buscar
+  validation: (.+)$
+
+query:
+  id: query
+  options:
+    force_reply: true
+    input_field_placeholder: Formato ```query```
+  text: Introduce la ruta al elemento con formato ```query```
+  validation: (.+)$
