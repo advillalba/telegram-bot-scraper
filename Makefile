@@ -17,12 +17,3 @@ run:
 build-image:
 	docker build -t scraper .
 
-start-image:
-	- docker stop scraper
-	- docker rm scraper
-	docker run -d --name scraper\
-			-e TELEGRAM_BOT_KEY=${TELEGRAM_BOT_KEY} \
-			-e OWNER_ID=${TELEGRAM_BOT_OWNER} \
-			-e BACKUP_PATH="/shared" \
-			-e LOG_PATH="/shared" \
-			-v ~/volumes/scraper/:/shared/ scraper
