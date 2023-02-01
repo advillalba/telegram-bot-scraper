@@ -15,5 +15,7 @@ run:
 	python app.py
 
 build-image:
-	docker build -t scraper .
+	docker build -t telegram-bot-scraper .
+
+
 

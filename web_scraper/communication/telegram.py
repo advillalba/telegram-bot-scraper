@@ -70,24 +70,24 @@ class Telegram:
 
     def _message(self, result: dict):
         message = result['message']
-        chat_name = message['chat']['title'] if 'title' in message[
-            'chat'] else 'Private'
+        chat_name = Telegram.__get_chat_name(message)
+        user = Telegram.__get_username(message['from'])
         self.__process_message(chat_id=message['chat']['id'],
                                user_id=message['from']['id'],
                                chat_name=chat_name,
-                               user=message['from']['username'],
+                               user=user,
                                text=message['text'])
 
     def __callback(self, result):
         message = result['callback_query']['message']
 
-        chat_name = Telegram.__get_chat_name(message, result)
+        chat_name = Telegram.__get_chat_name(message)
+        user = Telegram.__get_username(result['callback_query']['from'])
 
         self.__process_message(chat_id=message['chat']['id'],
                                user_id=result['callback_query']['from']['id'],
                                chat_name=chat_name,
-                               user=result['callback_query']['from'][
-                                   'username'],
+                               user=user,
                                text=result['callback_query']['data'])
 
     def __process_message(self, chat_id: int, user_id: int, chat_name: str,
@@ -126,12 +126,17 @@ class Telegram:
     def __is_message(message):
         return 'message' in message and 'text' in message['message']
 
-    @classmethod
-    def __get_chat_name(cls, message, result):
-        if 'title' in result['callback_query']['message']['chat']:
+    @staticmethod
+    def __get_chat_name(message):
+        if 'title' in message['chat']:
             return message['chat']['title']
         else:
             return CONSTANTS['private']
+
+    @staticmethod
+    def __get_username(message_from):
+        return message_from['username'] if 'username' in message_from else \
+            message_from['first_name']
 
     @staticmethod
     def __validate_and_finish_action(action, text):
